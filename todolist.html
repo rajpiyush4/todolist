@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@402&family=Lato:ital,wght@1,100&family=Stick+No+Bills:wght@300&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>To do list</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box
+    }
+
+    body {
+        background: #c1ced1;
+        background-size: cover;
+        background-position: 0 -700px;
+        width: 100vw;
+        height: 100vh;
+        user-select: none;
+    }
+
+    #container {
+        width: 55%;
+        height: 50%;
+        background-color: #ecf0f1;
+        margin: auto;
+        border-radius: 20px;
+    }
+
+    #heading {
+        font-family: 'Zen Kurenaido', sans-serif;
+        font-size: 40px;
+        text-align: center;
+    }
+
+
+    #area {
+        display: block;
+        margin: auto;
+        max-width: 300px;
+        min-width: 250px;
+        min-height: 50px;
+        max-height: 70px;
+        font-size: 15px;
+        outline: none;
+        font-weight: bold;
+        border: rgb(78, 155, 179) solid 2px;
+        padding-left: 15px;
+        border-radius: 10px;
+        background-color: transparent;
+
+    }
+
+    #sub {
+        display: block;
+
+        margin: 10px auto 0 auto;
+    }
+
+    #result {
+
+        margin: 10px;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 200;
+        font-size: 22px;
+        word-spacing: 5px;
+        text-transform: uppercase;
+        list-style-type: circle;
+        border: 0.1px double honeydew;
+
+    }
+
+    .button {
+        font-size: 25px;
+        font-weight: bold;
+        font-family: 'Zen Kurenaido', sans-serif;
+        display: block;
+        width: 200px;
+        margin: 10px auto 0 auto;
+        padding-bottom: 10px;
+        height: 30px;
+        background-color: #95a5a6;
+        border: none;
+        border-radius: 10px;
+    }
+
+    /* My css code */
+
+    .lii {
+        background-color: gold;
+        transition: 0.4s ease-in;
+        margin: 3px;
+        padding: 2px 0px 2px 7px;
+        border-radius: 2px;
+        /* border:1px double black; */
+        border-left: 3px solid honeydew;
+        word-wrap: break-word;
+        box-shadow: inset 0px 0px 3px honeydew;
+    }
+
+    /* end  */
+</style>
+
+<body>
+    <!-- <h1 id="heading">Alzheimer's guy's list</h1> -->
+    <h1 id="heading">To do list</h1>
+
+    <div id="container">
+
+
+        <input type="text" id="area" placeholder="Title...">
+        <button onclick="add()" class="button">Add</button>
+
+        <!-- <input id="sub" type="submit" > -->
+
+        <ul id="result">
+        </ul>
+
+
+
+    </div>
+    <script src="main.js"></script>
+    <script>
+
+
+        var elem = document.getElementsByClassName('lii');
+        var a = document.getElementById('area');
+        var f = document.getElementById('result');
+
+        var prev;
+        prev = localStorage.getItem('v');
+        if (prev != null) {
+            f.innerHTML += prev;
+        }
+
+        function add() {
+           
+
+            var t;
+            a = document.getElementById('area');
+            var b = document.createTextNode(a.value);
+            if (a.value != '') {
+                t = document.createElement('li');
+            } else { alert('Please type something!!! #$') }
+
+
+            t.className = 'lii';
+            f = document.getElementById('result');
+
+            t.appendChild(b);
+            f.appendChild(t);
+            a.value = '';
+
+            //console.log(a + ': '+ b)
+            elem = document.getElementsByClassName('lii');
+
+            onClickedFIRE();
+            localStorage.setItem('v', f.innerHTML);
+        }
+
+        // my js code
+        function onClickedFIRE() {
+
+            for (let i = 0; i < elem.length; i++) {
+                elem[i].onclick = function () {
+
+                    var elemBackgoundProperty = getComputedStyle(elem[i]).getPropertyValue('background-color');
+                    //elemBackgoundProperty return background color value of clicked element
+                    //console.log(elemBackgoundProperty)
+
+                    if (elemBackgoundProperty != 'rgb(230, 240, 230)') { //only return colors in rgb;
+                        elem[i].style = 'background-color:rgb(230, 240, 230); text-decoration: line-through; list-style-type: disc; border-left:3px solid gold; ';
+
+                    }
+                    else {
+                        elem[i].style = 'background-color:gold; text-decoration:none; ';
+                    }
+
+                } 
+                elem[i].ondblclick = function () {
+                    this.remove();
+                    localStorage.setItem('v', document.getElementById('result').innerHTML);
+                }
+            }
+
+        }
+
+        onClickedFIRE()
+
+
+
+        document.addEventListener('keydown', (event) => {
+            var name = event.key;
+            //alert(`Key pressed ${name}`);
+            if (name == "Enter") {
+                add()
+            }
+            if (name == "/") {
+                a.focus()
+            }
+        }, false);
+
+
+
+    </script>
+</body>
+
+</html>
